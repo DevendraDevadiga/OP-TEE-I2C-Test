@@ -33,16 +33,26 @@ I2C_Write()->TEEC_InvokeCommand(&sess, TA_I2C_WRITE, &op, &err_origin);
 I2C_Xfer()->TEEC_InvokeCommand(&sess, TA_I2C_XFER, &op, &err_origin);
 
 Call from Trusted Application(TA):
+TA_I2C_INIT -
 ta_imx_i2c_init()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_INIT, exp_param_types, params, &origin);
+TA_I2C_SLAVE -
 ta_imx_set_i2c_slave()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_SLAVE, exp_param_types, params, &origin);
+TA_I2C_READ -
 ta_imx_i2c_read()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_READ, exp_param_types, params, &origin);
+TA_I2C_WRITE -
 ta_imx_i2c_write()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_WRITE, exp_param_types, params, &origin)
+TA_I2C_XFER -
 ta_imx_i2c_xfer()->TEE_InvokeTACommand (i2c_pta_sess, 0, TA_I2C_XFER, exp_param_types, params, &origin);
 
 Call from Pseudo TA (PTA):
+PTA_I2C_INIT - 
 pta_imx_i2c_init()-> imx_i2c_init(params[0].value.a, params[0].value.b);
+PTA_I2C_SLAVE - 
 pta_imx_set_i2c_slave()->  imx_i2c_probe(params[0].value.a, params[0].value.b);	
+PTA_I2C_READ - 
 pta_imx_i2c_read()->imx_i2c_read(params[0].value.a, params[0].value.b, params[2].memref.buffer, params[2].memref.size);
+PTA_I2C_WRITE -
 pta_imx_i2c_write()-> imx_i2c_write(params[0].value.a, params[0].value.b, params[1].memref.buffer, params[1].memref.size);
+TA_I2C_XFER -
 pta_imx_i2c_xfer()->imx_i2c_read() and imx_i2c_write()
 
