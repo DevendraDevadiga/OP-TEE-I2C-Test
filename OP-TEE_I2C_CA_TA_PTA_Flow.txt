@@ -1,0 +1,48 @@
+Source Code Structure:
+CA and PTA:
+imx_i2c_test/
+├── Android.mk
+├── CMakeLists.txt
+├── host
+│   ├── imx_i2c_test.c
+│   ├── imx_i2c_test.h
+│   └── Makefile
+├── Makefile
+└── ta
+    ├── Android.mk
+    ├── i2c_test_ta.c
+    ├── include
+    │   ├── i2c_priv.h
+    │   └── i2c_test_ta.h
+    ├── Makefile
+    ├── sub.mk
+    └── user_ta_header_defines.h
+
+PTA:
+core/arch/arm/pta/pta_imx_i2c_read_write.c	
+
+I2C Driver:
+core/drivers/imx_i2c.c
+
+Call from Client Application(CA):
+TEEC_InitializeContext()->TEEC_OpenSession()->
+I2C_Init()->TEEC_InvokeCommand(&sess, TA_I2C_INIT, &op, &err_origin);
+Set_I2C_Slave()->TEEC_InvokeCommand(&sess, TA_I2C_SLAVE, &op, &err_origin);
+I2C_Read()->TEEC_InvokeCommand(&sess, TA_I2C_READ, &op, &err_origin);
+I2C_Write()->TEEC_InvokeCommand(&sess, TA_I2C_WRITE, &op, &err_origin);
+I2C_Xfer()->TEEC_InvokeCommand(&sess, TA_I2C_XFER, &op, &err_origin);
+
+Call from Trusted Application(TA):
+ta_imx_i2c_init()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_INIT, exp_param_types, params, &origin);
+ta_imx_set_i2c_slave()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_SLAVE, exp_param_types, params, &origin);
+ta_imx_i2c_read()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_READ, exp_param_types, params, &origin);
+ta_imx_i2c_write()->TEE_InvokeTACommand (i2c_pta_sess, 0, PTA_I2C_WRITE, exp_param_types, params, &origin)
+ta_imx_i2c_xfer()->TEE_InvokeTACommand (i2c_pta_sess, 0, TA_I2C_XFER, exp_param_types, params, &origin);
+
+Call from Pseudo TA (PTA):
+pta_imx_i2c_init()-> imx_i2c_init(params[0].value.a, params[0].value.b);
+pta_imx_set_i2c_slave()->  imx_i2c_probe(params[0].value.a, params[0].value.b);	
+pta_imx_i2c_read()->imx_i2c_read(params[0].value.a, params[0].value.b, params[2].memref.buffer, params[2].memref.size);
+pta_imx_i2c_write()-> imx_i2c_write(params[0].value.a, params[0].value.b, params[1].memref.buffer, params[1].memref.size);
+pta_imx_i2c_xfer()->imx_i2c_read() and imx_i2c_write()
+
