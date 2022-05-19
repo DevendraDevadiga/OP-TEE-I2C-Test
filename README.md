@@ -9,7 +9,7 @@ E-mail: devendradevadiga01@gmail.com
 
 Refer this article for more information:
 
-bit.ly/3Kh2dRT
+https://bit.ly/3Kh2dRT
 
 Also provided video about OP-TEE:
 
