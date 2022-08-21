@@ -5,6 +5,9 @@ OP-TEE driver related changes are provided in this commit: https://github.com/OP
 
 E-mail: devendradevadiga01@gmail.com
 
+Get more information on Quora Link below:
+
+https://howtorunopteeonqemuarmv8v7.quora.com/?invite_code=ym8C6ev4mVZUnJMl2s3J
 
 
 Refer this article for more information:
